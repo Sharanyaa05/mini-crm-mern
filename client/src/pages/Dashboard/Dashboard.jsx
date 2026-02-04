@@ -5,6 +5,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import TodayIcon from '@mui/icons-material/Today';
 import { fetchStats } from '../../store/dashboard/dashboardAction';
 import Loader from '../../components/common/Loader';
 import ErrorAlert from '../../components/common/ErrorAlert';
@@ -23,15 +24,21 @@ const statCards = [
     icon: <CheckCircleIcon fontSize="large" />,
   },
   {
+    key: 'pendingTasks',
+    label: 'Pending Tasks',
+    description: 'Tasks assigned to you that are not yet done. Stay on top of your schedule.',
+    icon: <AssignmentIcon fontSize="large" />,
+  },
+  {
     key: 'tasksDueToday',
     label: 'Tasks Due Today',
-    description: 'Pending tasks for today. Stay on top of your schedule.',
-    icon: <AssignmentIcon fontSize="large" />,
+    description: 'Tasks assigned to you with a due date today. Get them done.',
+    icon: <TodayIcon fontSize="large" />,
   },
   {
     key: 'completedTasks',
     label: 'Completed Tasks',
-    description: 'Tasks marked as done. Review your progress and productivity.',
+    description: 'Tasks assigned to you that are marked as done. Review your progress.',
     icon: <DoneAllIcon fontSize="large" />,
   },
 ];

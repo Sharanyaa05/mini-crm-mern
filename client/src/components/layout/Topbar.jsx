@@ -36,9 +36,14 @@ export default function Topbar() {
           Mini CRM
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Typography variant="body2" color="text.secondary">
-            {user?.name || user?.email}
-          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+            <Typography variant="body2" fontWeight={600} color="text.primary">
+              {user?.name || 'User'}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {user?.email || ''}
+            </Typography>
+          </Box>
           <Button
             color="primary"
             onClick={handleLogout}
