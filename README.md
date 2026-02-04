@@ -20,18 +20,18 @@ A minimal CRM with **Authentication**, **Dashboard**, **Leads**, **Companies**, 
 ```bash
 cd server
 npm install
-cp .env.example .env   # or create .env with MONGODB_URI, JWT_SECRET, PORT
+cp .env   # with MONGODB_URI, JWT_SECRET, PORT
 npm run dev
 ```
 
-Runs on `http://localhost:5000`. API base: `/api`.
+Runs on `http://localhost:8000`. API base: `/api`.
 
 ### Frontend
 
 ```bash
 cd client
 npm install
-# .env: VITE_API_URL=http://localhost:5000/api (or leave default for proxy)
+# .env: VITE_API_URL=http://localhost:8000/api 
 npm run dev
 ```
 
@@ -47,7 +47,4 @@ Runs on `http://localhost:3000`. Vite proxies `/api` to backend when using defau
 
 See [AUTHORIZATION.md](./AUTHORIZATION.md) for a clear description of how authentication and authorization work (JWT, protected routes, task assignment rules).
 
-## Deploy
 
-- **Backend:** Deploy to Railway, Render, or any Node host. Set `MONGODB_URI` and `JWT_SECRET`.
-- **Frontend:** Build with `npm run build` and deploy the `dist/` folder to Netlify, Vercel, etc. Set `VITE_API_URL` to your live API URL before building.
