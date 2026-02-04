@@ -5,6 +5,7 @@ import Login from '../pages/Login/Login';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import LeadsList from '../pages/Leads/LeadsList';
 import LeadForm from '../pages/Leads/LeadForm';
+import LeadShow from '../pages/Leads/LeadShow';
 import CompanyList from '../pages/Companies/CompanyList';
 import CompanyDetail from '../pages/Companies/CompanyDetail';
 import Tasks from '../pages/Tasks/Tasks';
@@ -26,7 +27,8 @@ export default function AppRoutes() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="leads" element={<LeadsList />} />
         <Route path="leads/new" element={<LeadForm />} />
-        <Route path="leads/:id" element={<LeadForm />} />
+        <Route path="leads/:id" element={<LeadShow />} />
+        <Route path="leads/:id/edit" element={<LeadForm />} />
         <Route path="companies" element={<CompanyList />} />
         <Route path="companies/:id" element={<CompanyDetail />} />
         <Route path="tasks" element={<Tasks />} />

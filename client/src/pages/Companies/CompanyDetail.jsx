@@ -70,7 +70,10 @@ export default function CompanyDetail() {
                       <TableCell>{lead.status}</TableCell>
                       <TableCell>{lead.assignedTo?.name || '-'}</TableCell>
                       <TableCell align="right">
-                        <AppButton size="small" variant="outlined" onClick={() => navigate(`/leads/${lead._id}`)}>
+                        <AppButton size="small" variant="text" onClick={() => navigate(`/leads/${lead._id}`)}>
+                          View
+                        </AppButton>
+                        <AppButton size="small" variant="outlined" onClick={() => navigate(`/leads/${lead._id}/edit`)}>
                           Edit
                         </AppButton>
                       </TableCell>

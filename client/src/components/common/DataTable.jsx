@@ -7,7 +7,6 @@ import {
   TableRow,
   Paper,
   TablePagination,
-  Box,
 } from '@mui/material';
 
 export default function DataTable({
@@ -25,9 +24,9 @@ export default function DataTable({
   sx = {},
 }) {
   return (
-    <Paper sx={{ overflow: 'hidden', ...sx }}>
-      <TableContainer>
-        <Table size="small" stickyHeader>
+    <Paper sx={{ overflow: 'hidden', borderRadius: 2, border: '1px solid', borderColor: 'divider', ...sx }}>
+      <TableContainer sx={{ minHeight: 320 }}>
+        <Table size="small" stickyHeader sx={{ width: '100%', tableLayout: 'fixed', '& tbody td': { py: 1.5, px: 2 } }}>
           <TableHead>
             <TableRow>
               {columns.map((col) => (
@@ -35,10 +34,14 @@ export default function DataTable({
                   key={col.id}
                   align={col.align || 'left'}
                   sx={{
-                    fontWeight: 600,
-                    bgcolor: 'background.paper',
-                    borderBottom: 1,
+                    fontWeight: 700,
+                    fontSize: '0.8125rem',
+                    bgcolor: 'action.hover',
+                    borderBottom: '2px solid',
                     borderColor: 'divider',
+                    py: 1.5,
+                    px: 2,
+                    color: 'text.primary',
                   }}
                 >
                   {col.label}
@@ -49,13 +52,24 @@ export default function DataTable({
           <TableBody>
             {loading && rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={columns.length} align="center" sx={{ py: 4 }}>
+                <TableCell colSpan={columns.length} align="center" sx={{ py: 6 }}>
                   {loadingComponent}
                 </TableCell>
               </TableRow>
             ) : rows.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={columns.length} align="center" sx={{ py: 4, color: 'text.secondary' }}>
+              <TableRow sx={{ '& td': { borderBottom: 'none', width: '100%' } }}>
+                <TableCell
+                  colSpan={columns.length}
+                  sx={{
+                    width: '100%',
+                    minHeight: 280,
+                    height: 280,
+                    color: 'text.secondary',
+                    fontSize: '0.875rem',
+                    textAlign: 'center',
+                    verticalAlign: 'middle',
+                  }}
+                >
                   {emptyMessage}
                 </TableCell>
               </TableRow>
@@ -74,7 +88,7 @@ export default function DataTable({
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={onRowsPerPageChange}
           rowsPerPageOptions={[5, 10, 25]}
-          sx={{ borderTop: 1, borderColor: 'divider' }}
+          sx={{ borderTop: 1, borderColor: 'divider', minHeight: 52 }}
         />
       )}
     </Paper>

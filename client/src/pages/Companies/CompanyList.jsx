@@ -6,6 +6,10 @@ import {
   TableCell,
   TableRow,
   IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -15,6 +19,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddIcon from '@mui/icons-material/Add';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { fetchList, create } from '../../store/companies/companyAction';
 import { setPage } from '../../store/companies/companySlice';
 import DataTable from '../../components/common/DataTable';
@@ -35,6 +40,8 @@ export default function CompanyList() {
   const { companies, total, page, loading, error } = useSelector((state) => state.companies);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ name: '', industry: '', location: '' });
+  const [actionAnchor, setActionAnchor] = useState(null);
+  const [actionRow, setActionRow] = useState(null);
 
   useEffect(() => {
     dispatch(fetchList({ page, limit: 10 }));
@@ -47,6 +54,22 @@ export default function CompanyList() {
     setOpen(false);
     setForm({ name: '', industry: '', location: '' });
     dispatch(fetchList({ page, limit: 10 }));
+  };
+
+  const handleActionMenuOpen = (e, row) => {
+    e.stopPropagation();
+    setActionAnchor(e.currentTarget);
+    setActionRow(row);
+  };
+
+  const handleActionMenuClose = () => {
+    setActionAnchor(null);
+    setActionRow(null);
+  };
+
+  const handleViewDetails = () => {
+    if (actionRow) navigate(`/companies/${actionRow._id}`);
+    handleActionMenuClose();
   };
 
   return (
@@ -76,9 +99,28 @@ export default function CompanyList() {
             <TableCell>{row.industry || '—'}</TableCell>
             <TableCell>{row.location || '—'}</TableCell>
             <TableCell align="right">
-              <IconButton size="small" onClick={() => navigate(`/companies/${row._id}`)} aria-label="View">
-                <VisibilityIcon fontSize="small" />
+              <IconButton
+                size="small"
+                onClick={(e) => handleActionMenuOpen(e, row)}
+                aria-label="More options"
+                aria-haspopup="true"
+                aria-controls={actionAnchor ? 'company-row-menu' : undefined}
+              >
+                <MoreVertIcon fontSize="small" />
               </IconButton>
+              <Menu
+                id="company-row-menu"
+                anchorEl={actionAnchor}
+                open={Boolean(actionAnchor)}
+                onClose={handleActionMenuClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <MenuItem onClick={handleViewDetails}>
+                  <ListItemIcon><VisibilityIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText>View details</ListItemText>
+                </MenuItem>
+              </Menu>
             </TableCell>
           </TableRow>
         )}
