@@ -36,6 +36,7 @@ import AppButton from '../../components/common/AppButton';
 import Loader from '../../components/common/Loader';
 import ErrorAlert from '../../components/common/ErrorAlert';
 import EditLeadDialog from '../../components/common/EditLeadDialog';
+import DeleteConfirmationDialog from '../../components/common/DeleteConfirmationDialog';
 
 const COLUMNS = [
   { id: 'name', label: 'Name', minWidth: 120 },
@@ -68,6 +69,8 @@ export default function LeadsList() {
   const [actionRow, setActionRow] = useState(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editLeadId, setEditLeadId] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteRow, setDeleteRow] = useState(null);
 
   useEffect(() => {
     dispatch(fetchList({ page, limit: 10, search: search || undefined, status: statusFilter || undefined }));
@@ -134,12 +137,23 @@ export default function LeadsList() {
 
   const handleDeleteFromMenu = () => {
     if (actionRow) {
-      if (window.confirm('Soft delete this lead?')) {
-        dispatch(remove(actionRow._id));
-        dispatch(fetchList({ page, limit: 10, search: search || undefined, status: statusFilter || undefined }));
-      }
+      setDeleteRow(actionRow);
+      setDeleteDialogOpen(true);
     }
     handleActionMenuClose();
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteRow) {
+      await dispatch(remove(deleteRow._id));
+      dispatch(fetchList({ page, limit: 10, search: search || undefined, status: statusFilter || undefined }));
+      setDeleteRow(null);
+    }
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+    setDeleteRow(null);
   };
 
   return (
@@ -329,6 +343,17 @@ export default function LeadsList() {
           setEditLeadId(null);
         }}
         onSaved={() => dispatch(fetchList({ page, limit: 10, search: search || undefined, status: statusFilter || undefined }))}
+      />
+
+      <DeleteConfirmationDialog
+        open={deleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        onConfirm={handleConfirmDelete}
+        title="Delete lead?"
+        message={deleteRow ? `Are you sure you want to delete "${deleteRow.name}"? This lead will be soft deleted.` : 'Are you sure you want to delete this lead?'}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        loading={loading}
       />
     </Box>
   );
