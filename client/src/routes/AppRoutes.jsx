@@ -22,7 +22,8 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       >
-        <Route index element={<Dashboard />} />
+        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route path="dashboard" element={<Dashboard />} />
         <Route path="leads" element={<LeadsList />} />
         <Route path="leads/new" element={<LeadForm />} />
         <Route path="leads/:id" element={<LeadForm />} />
@@ -30,7 +31,7 @@ export default function AppRoutes() {
         <Route path="companies/:id" element={<CompanyDetail />} />
         <Route path="tasks" element={<Tasks />} />
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }

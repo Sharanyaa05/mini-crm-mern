@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logout } from '../../store/auth/authSlice';
-import { DRAWER_WIDTH } from '../../utils/constants';
 
 export default function Topbar() {
   const dispatch = useDispatch();
@@ -23,8 +22,9 @@ export default function Topbar() {
       elevation={0}
       color="default"
       sx={{
-        width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
-        ml: { md: `${DRAWER_WIDTH}px` },
+        width: '100%',
+        left: 0,
+        right: 0,
         bgcolor: 'background.paper',
         borderBottom: '1px solid',
         borderColor: 'divider',

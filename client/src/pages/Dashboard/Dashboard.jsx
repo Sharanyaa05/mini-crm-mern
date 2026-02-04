@@ -10,10 +10,30 @@ import Loader from '../../components/common/Loader';
 import ErrorAlert from '../../components/common/ErrorAlert';
 
 const statCards = [
-  { key: 'totalLeads', label: 'Total Leads', icon: <PeopleIcon fontSize="large" /> },
-  { key: 'qualifiedLeads', label: 'Qualified Leads', icon: <CheckCircleIcon fontSize="large" /> },
-  { key: 'tasksDueToday', label: 'Tasks Due Today', icon: <AssignmentIcon fontSize="large" /> },
-  { key: 'completedTasks', label: 'Completed Tasks', icon: <DoneAllIcon fontSize="large" /> },
+  {
+    key: 'totalLeads',
+    label: 'Total Leads',
+    description: 'All leads in your pipeline. Track and manage every contact.',
+    icon: <PeopleIcon fontSize="large" />,
+  },
+  {
+    key: 'qualifiedLeads',
+    label: 'Qualified Leads',
+    description: 'Leads ready for conversion. Focus on high-potential opportunities.',
+    icon: <CheckCircleIcon fontSize="large" />,
+  },
+  {
+    key: 'tasksDueToday',
+    label: 'Tasks Due Today',
+    description: 'Pending tasks for today. Stay on top of your schedule.',
+    icon: <AssignmentIcon fontSize="large" />,
+  },
+  {
+    key: 'completedTasks',
+    label: 'Completed Tasks',
+    description: 'Tasks marked as done. Review your progress and productivity.',
+    icon: <DoneAllIcon fontSize="large" />,
+  },
 ];
 
 export default function Dashboard() {
@@ -27,32 +47,41 @@ export default function Dashboard() {
   if (loading && !stats) return <Loader />;
 
   return (
-    <Box>
+    <Box sx={{ width: '100%', minHeight: 'calc(100vh - 64px - 48px)', display: 'flex', flexDirection: 'column' }}>
       <Typography variant="h5" gutterBottom fontWeight={600} sx={{ mb: 2 }}>
         Dashboard
       </Typography>
       <ErrorAlert message={error} onClose={() => {}} />
-      <Grid container spacing={3} sx={{ mt: 1 }}>
-        {statCards.map(({ key, label, icon }) => (
-          <Grid item xs={12} sm={6} md={3} key={key}>
+      <Grid container spacing={3} sx={{ flex: 1, alignContent: 'flex-start' }}>
+        {statCards.map(({ key, label, description, icon }) => (
+          <Grid item xs={12} sm={6} key={key}>
             <Card
               sx={{
-                transition: 'transform 0.2s ease, border-color 0.2s ease',
+                height: '100%',
+                minHeight: 160,
+                transition: 'all 0.2s ease',
+                border: '1px solid',
+                borderColor: 'divider',
+                cursor: 'pointer',
                 '&:hover': {
-                  transform: 'translateY(-2px)',
+                  transform: 'translateY(-4px)',
+                  boxShadow: 4,
                   borderColor: 'primary.main',
                 },
               }}
             >
-              <CardContent sx={{ p: 2.5 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Typography color="text.secondary" variant="body2" fontWeight={500}>
+              <CardContent sx={{ p: 3, height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 1.5 }}>
+                  <Typography color="text.secondary" variant="body2" fontWeight={600}>
                     {label}
                   </Typography>
                   <Box sx={{ color: 'primary.main', opacity: 0.9 }}>{icon}</Box>
                 </Box>
-                <Typography variant="h4" sx={{ mt: 1.5 }} fontWeight={700}>
+                <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
                   {stats ? stats[key] : 0}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.5, mt: 'auto' }}>
+                  {description}
                 </Typography>
               </CardContent>
             </Card>

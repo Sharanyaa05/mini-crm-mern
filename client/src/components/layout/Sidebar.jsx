@@ -7,7 +7,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import { DRAWER_WIDTH } from '../../utils/constants';
 
 const navItems = [
-  { label: 'Dashboard', path: '/', icon: <DashboardIcon /> },
+  { label: 'Dashboard', path: '/dashboard', icon: <DashboardIcon /> },
   { label: 'Leads', path: '/leads', icon: <PeopleIcon /> },
   { label: 'Companies', path: '/companies', icon: <BusinessIcon /> },
   { label: 'Tasks', path: '/tasks', icon: <AssignmentIcon /> },
@@ -20,7 +20,7 @@ export default function Sidebar() {
   return (
     <List sx={{ width: DRAWER_WIDTH, pt: 2 }}>
       {navItems.map((item) => {
-        const selected = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+        const selected = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
         return (
           <ListItemButton
             key={item.path}

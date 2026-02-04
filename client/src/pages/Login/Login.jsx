@@ -30,7 +30,7 @@ export default function Login() {
   const { loading, error } = useSelector((state) => state.auth);
 
   const isRegister = location.pathname === '/signup';
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || '/dashboard';
 
   const passwordsMatch = confirmPassword.length > 0 && password === confirmPassword;
   const confirmPasswordError = isRegister && confirmPassword.length > 0 && !passwordsMatch;
