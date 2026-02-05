@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Grid, Card, CardContent, Typography, Box } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -16,35 +17,42 @@ const statCards = [
     label: 'Total Leads',
     description: 'All leads in your pipeline. Track and manage every contact.',
     icon: <PeopleIcon fontSize="large" />,
+    path: '/leads',
   },
   {
     key: 'qualifiedLeads',
     label: 'Qualified Leads',
     description: 'Leads ready for conversion. Focus on high-potential opportunities.',
     icon: <CheckCircleIcon fontSize="large" />,
+    path: '/leads',
+    state: { statusFilter: 'Qualified' },
   },
   {
     key: 'pendingTasks',
     label: 'Pending Tasks',
     description: 'Tasks assigned to you that are not yet done. Stay on top of your schedule.',
     icon: <AssignmentIcon fontSize="large" />,
+    path: '/tasks',
   },
   {
     key: 'tasksDueToday',
     label: 'Tasks Due Today',
     description: 'Tasks assigned to you with a due date today. Get them done.',
     icon: <TodayIcon fontSize="large" />,
+    path: '/tasks',
   },
   {
     key: 'completedTasks',
     label: 'Completed Tasks',
     description: 'Tasks assigned to you that are marked as done. Review your progress.',
     icon: <DoneAllIcon fontSize="large" />,
+    path: '/tasks',
   },
 ];
 
 export default function Dashboard() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { stats, loading, error } = useSelector((state) => state.dashboard);
 
   useEffect(() => {
@@ -53,6 +61,10 @@ export default function Dashboard() {
 
   if (loading && !stats) return <Loader />;
 
+  const handleCardClick = (path, state) => () => {
+    navigate(path, { state: state || {} });
+  };
+
   return (
     <Box sx={{ width: '100%', minHeight: 'calc(100vh - 64px - 48px)', display: 'flex', flexDirection: 'column' }}>
       <Typography variant="h5" gutterBottom fontWeight={600} sx={{ mb: 2 }}>
@@ -60,9 +72,10 @@ export default function Dashboard() {
       </Typography>
       <ErrorAlert message={error} onClose={() => {}} />
       <Grid container spacing={3} sx={{ flex: 1, alignContent: 'flex-start' }}>
-        {statCards.map(({ key, label, description, icon }) => (
+        {statCards.map(({ key, label, description, icon, path, state }) => (
           <Grid item xs={12} sm={6} key={key}>
             <Card
+              onClick={handleCardClick(path, state)}
               sx={{
                 height: '100%',
                 minHeight: 160,

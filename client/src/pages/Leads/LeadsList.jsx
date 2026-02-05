@@ -19,7 +19,7 @@ import {
   DialogActions,
   TextField,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -57,12 +57,13 @@ const INITIAL_FORM = {
 
 export default function LeadsList() {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const { leads, total, page, loading, error } = useSelector((state) => state.leads);
   const { users } = useSelector((state) => state.auth);
   const { companies } = useSelector((state) => state.companies);
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState(location.state?.statusFilter ?? '');
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(INITIAL_FORM);
   const [actionAnchor, setActionAnchor] = useState(null);
@@ -71,6 +72,12 @@ export default function LeadsList() {
   const [editLeadId, setEditLeadId] = useState(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteRow, setDeleteRow] = useState(null);
+
+  useEffect(() => {
+    if (location.state?.statusFilter !== undefined) {
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, []);
 
   useEffect(() => {
     dispatch(fetchList({ page, limit: 10, search: search || undefined, status: statusFilter || undefined }));
