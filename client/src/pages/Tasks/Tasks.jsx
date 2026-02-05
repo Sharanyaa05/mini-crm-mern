@@ -20,6 +20,7 @@ import { fetchList, create, updateStatus } from '../../store/tasks/taskAction';
 import { setPage } from '../../store/tasks/taskSlice';
 import { getUsers } from '../../store/auth/authAction';
 import { fetchList as fetchLeads } from '../../store/leads/leadsAction';
+import SearchInput from '../../components/common/SearchInput';
 import DataTable from '../../components/common/DataTable';
 import AppButton from '../../components/common/AppButton';
 import Loader from '../../components/common/Loader';
@@ -41,6 +42,7 @@ export default function Tasks() {
   const { tasks, total, page, loading, error } = useSelector((state) => state.tasks);
   const { user, users } = useSelector((state) => state.auth);
   const { leads } = useSelector((state) => state.leads);
+  const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ title: '', lead: '', dueDate: '', assignedTo: '' });
 
@@ -50,8 +52,14 @@ export default function Tasks() {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchList({ page, limit: 10 }));
-  }, [dispatch, page]);
+    dispatch(fetchList({ page, limit: 10, search: search || undefined }));
+  }, [dispatch, page, search]);
+
+  const handleSearch = (value) => {
+    setSearch(value ?? search);
+    dispatch(setPage(1));
+    dispatch(fetchList({ page: 1, limit: 10, search: (value ?? search) || undefined }));
+  };
 
   const handleCreate = () => {
     setForm({ title: '', lead: '', dueDate: '', assignedTo: user?._id || '' });
@@ -68,7 +76,7 @@ export default function Tasks() {
       assignedTo: form.assignedTo,
     }));
     setOpen(false);
-    dispatch(fetchList({ page, limit: 10 }));
+    dispatch(fetchList({ page, limit: 10, search: search || undefined }));
   };
 
   const handleStatusChange = async (task, newStatus) => {
@@ -91,7 +99,15 @@ export default function Tasks() {
         Tasks
       </Typography>
       <ErrorAlert message={error} onClose={() => dispatch({ type: 'tasks/clearError' })} />
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          onSearch={handleSearch}
+          placeholder="Search by task title... Press Enter"
+          showButton={false}
+          sx={{ flex: '1 1 220px' }}
+        />
         <AppButton variant="contained" startIcon={<AddIcon />} onClick={handleCreate}>
           Add Task
         </AppButton>

@@ -22,6 +22,7 @@ import AddIcon from '@mui/icons-material/Add';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { fetchList, create } from '../../store/companies/companyAction';
 import { setPage } from '../../store/companies/companySlice';
+import SearchInput from '../../components/common/SearchInput';
 import DataTable from '../../components/common/DataTable';
 import AppButton from '../../components/common/AppButton';
 import Loader from '../../components/common/Loader';
@@ -38,14 +39,21 @@ export default function CompanyList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { companies, total, page, loading, error } = useSelector((state) => state.companies);
+  const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ name: '', industry: '', location: '' });
   const [actionAnchor, setActionAnchor] = useState(null);
   const [actionRow, setActionRow] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchList({ page, limit: 10 }));
-  }, [dispatch, page]);
+    dispatch(fetchList({ page, limit: 10, search: search || undefined }));
+  }, [dispatch, page, search]);
+
+  const handleSearch = (value) => {
+    setSearch(value ?? search);
+    dispatch(setPage(1));
+    dispatch(fetchList({ page: 1, limit: 10, search: (value ?? search) || undefined }));
+  };
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -53,7 +61,7 @@ export default function CompanyList() {
     await dispatch(create(form));
     setOpen(false);
     setForm({ name: '', industry: '', location: '' });
-    dispatch(fetchList({ page, limit: 10 }));
+    dispatch(fetchList({ page, limit: 10, search: search || undefined }));
   };
 
   const handleActionMenuOpen = (e, row) => {
@@ -78,7 +86,15 @@ export default function CompanyList() {
         Companies
       </Typography>
       <ErrorAlert message={error} onClose={() => dispatch({ type: 'companies/clearError' })} />
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          onSearch={handleSearch}
+          placeholder="Search by name, industry, or location... Press Enter"
+          showButton={false}
+          sx={{ flex: '1 1 220px' }}
+        />
         <AppButton variant="contained" startIcon={<AddIcon />} onClick={() => setOpen(true)}>
           Add Company
         </AppButton>
