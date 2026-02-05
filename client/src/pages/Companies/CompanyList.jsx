@@ -82,19 +82,20 @@ export default function CompanyList() {
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom fontWeight={600} sx={{ mb: 2 }}>
-        Companies
-      </Typography>
       <ErrorAlert message={error} onClose={() => dispatch({ type: 'companies/clearError' })} />
-      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+        <Typography variant="h5" fontWeight={600}>
+          Companies
+        </Typography>
         <SearchInput
           value={search}
           onChange={setSearch}
           onSearch={handleSearch}
           placeholder="Search by name, industry, or location... Press Enter"
           showButton={false}
-          sx={{ flex: '1 1 220px' }}
+          expandable
         />
+        <Box sx={{ flex: 1, minWidth: 0 }} />
         <AppButton variant="contained" startIcon={<AddIcon />} onClick={() => setOpen(true)}>
           Add Company
         </AppButton>

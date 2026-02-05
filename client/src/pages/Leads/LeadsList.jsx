@@ -158,19 +158,20 @@ export default function LeadsList() {
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom fontWeight={600} sx={{ mb: 2 }}>
-        Leads
-      </Typography>
       <ErrorAlert message={error} onClose={() => dispatch({ type: 'leads/clearError' })} />
-      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+        <Typography variant="h5" fontWeight={600}>
+          Leads
+        </Typography>
         <SearchInput
           value={search}
           onChange={setSearch}
           onSearch={handleSearch}
           placeholder="Search by name or email... Press Enter"
           showButton={false}
-          sx={{ flex: '1 1 220px' }}
+          expandable
         />
+        <Box sx={{ flex: 1, minWidth: 0 }} />
         <FormControl size="small" sx={{ minWidth: 160 }}>
           <InputLabel>Status</InputLabel>
           <Select

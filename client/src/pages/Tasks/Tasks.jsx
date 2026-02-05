@@ -95,19 +95,20 @@ export default function Tasks() {
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom fontWeight={600} sx={{ mb: 2 }}>
-        Tasks
-      </Typography>
       <ErrorAlert message={error} onClose={() => dispatch({ type: 'tasks/clearError' })} />
-      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+        <Typography variant="h5" fontWeight={600}>
+          Tasks
+        </Typography>
         <SearchInput
           value={search}
           onChange={setSearch}
           onSearch={handleSearch}
           placeholder="Search by task title... Press Enter"
           showButton={false}
-          sx={{ flex: '1 1 220px' }}
+          expandable
         />
+        <Box sx={{ flex: 1, minWidth: 0 }} />
         <AppButton variant="contained" startIcon={<AddIcon />} onClick={handleCreate}>
           Add Task
         </AppButton>
